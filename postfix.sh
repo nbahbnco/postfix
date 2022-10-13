@@ -78,3 +78,4 @@ sed -i '/user:root.*:::/c\user:root@pam:1:0:::sistemas@mail.nubodata.com:::' /et
 
 sed -i '/email_from:/c\email_from: proxmox@mail.nubodata.com' /etc/pve/datacenter.cfg #Susituye el email de envio por defecto. 
 grep -qxF 'email_from: proxmox@mail.nubodata.com' /etc/pve/datacenter.cfg || echo 'email_from: proxmox@mail.nubodata.com' >> /etc/pve/datacenter.cfg #Añade linea si no existe.
+echo "Reportando $NOMBRE correo como funcional" | pvemailforward
