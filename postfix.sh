@@ -32,6 +32,7 @@ compatibility_level = 2
 smtp_header_checks = pcre:/etc/postfix/smtp_header_checks
 smtp_tls_wrappermode = yes
 smtp_tls_security_level = encrypt
+sender_canonical_maps = static:proxmox@mail.nubodata.com
 " > /etc/postfix/main.cf
 
 echo "mail.nubodata.com proxmox@mail.nubodata.com:$2" > /etc/postfix/sasl_passwd
