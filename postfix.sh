@@ -79,3 +79,12 @@ sed -i '/user:root.*:::/c\user:root@pam:1:0:::sistemas@mail.nubodata.com:::' /et
 sed -i '/email_from:/c\email_from: proxmox@mail.nubodata.com' /etc/pve/datacenter.cfg #Susituye el email de envio por defecto. 
 grep -qxF 'email_from: proxmox@mail.nubodata.com' /etc/pve/datacenter.cfg || echo 'email_from: proxmox@mail.nubodata.com' >> /etc/pve/datacenter.cfg #Añade linea si no existe.
 echo "Reportando $NOMBRE correo como funcional" | pvemailforward
+
+FILE=/etc/proxmox-backup/node.cfg # Comprobamos si este servidor ejecuta PBS
+if test -f "$FILE"; then
+    echo "Ejecuta PBS se procede a configurar"
+    grep -qxF 'email_from: proxmox@mail.nubodata.com' $FILE || echo 'email_from: proxmox@mail.nubodata.com' >> $FILE #Añade linea si no existe.
+else
+    echo "Ignorar PBS"
+fi
+
