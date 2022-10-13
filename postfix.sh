@@ -84,7 +84,7 @@ echo "Reportando $NOMBRE correo como funcional" | pvemailforward
 FILE=/etc/proxmox-backup/node.cfg # Comprobamos si este servidor ejecuta PBS
 if test -f "$FILE"; then
     echo "Ejecuta PBS se procede a configurar"
-    grep -qxF 'email_from: proxmox@mail.nubodata.com' $FILE || echo 'email_from: proxmox@mail.nubodata.com' >> $FILE #Añade linea si no existe.
+    grep -qxF 'email-from: proxmox@mail.nubodata.com' $FILE || echo 'email-from: proxmox@mail.nubodata.com' >> $FILE #Añade linea si no existe. Opiniones fuertes sobre que PBS utilize mail-from y PVE mail_from
 else
     echo "Ignorar PBS"
 fi
