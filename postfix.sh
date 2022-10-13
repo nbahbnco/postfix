@@ -1,6 +1,6 @@
 #!/bin/bash
 NOMBRE=$1 # Nombre que debe tener el equipo.
-apt install -y libsasl2-modules postfix-pcre
+apt install -y libsasl2-modules postfix-pcre fail2ban
 echo "
 /^From:.root/ REPLACE From: Notificacion Sistema $NOMBRE <proxmox@mail.nubodata.com>
 /^From:.vzdump/ REPLACE From: BACKUP $NOMBRE <proxmox@mail.nubodata.com>
