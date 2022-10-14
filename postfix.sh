@@ -1,9 +1,9 @@
 #!/bin/bash
 NOMBRE=$1 # Nombre que debe tener el equipo.
-apt install -y libsasl2-modules postfix-pcre fail2ban
+apt install -y libsasl2-modules postfix-pcre
 echo "
-/^From:.root/ REPLACE From: Notificacion Sistema $NOMBRE <proxmox@mail.nubodata.com>
-/^From:.vzdump/ REPLACE From: BACKUP $NOMBRE <proxmox@mail.nubodata.com>
+/^From:.root/ REPLACE From: Notificacion Sistema $NOMBRE <pxmx@mail.nubodata.com>
+/^From:.vzdump/ REPLACE From: BACKUP $NOMBRE <pxmx@mail.nubodata.com>
 /^Subject:.vzdump.*successful/ REPLACE Subject: BACKUP $NOMBRE EXITOSO
 /^Subject:.vzdump.*failed/ REPLACE Subject: BACKUP $NOMBRE FALLIDO
 " > /etc/postfix/smtp_header_checks
@@ -32,10 +32,9 @@ compatibility_level = 2
 smtp_header_checks = pcre:/etc/postfix/smtp_header_checks
 smtp_tls_wrappermode = yes
 smtp_tls_security_level = encrypt
-sender_canonical_maps = static:proxmox@mail.nubodata.com
 " > /etc/postfix/main.cf
 
-echo "mail.nubodata.com proxmox@mail.nubodata.com:$2" > /etc/postfix/sasl_passwd
+echo "mail.nubodata.com bckp@mail.nubodata.com:z9ws9u47oucxuzrujqg33s7jdubtkpxw" > /etc/postfix/sasl_passwd
 chmod 600 /etc/postfix/sasl_passwd
 chmod 600 /etc/postfix/smtp_header_checks
 
@@ -48,23 +47,23 @@ echo "
 [Definition]
 failregex = pvedaemon\[.*authentication failure; rhost=<HOST> user=.* msg=.*
 ignoreregex =
-" > /etc/fail2ban/filter.d/proxmox.conf
+" > /etc/fail2ban/filter.d/pxmx.conf
 
 echo "
 [DEFAULT]
 ignoreip = 127.0.0.0
 bantime  = 31556952s
 findtime  = 120s
-destemail = seguridad@mail.nubodata.com
-sender = proxmox@mail.nubodata.com
+destemail = sgrd@mail.nubodata.com
+sender = pxmx@mail.nubodata.com
 sendername = Fail2ban-$NOMBRE
 mta = sendmail
 action = %(action_mwl)s
 
-[proxmox]
+[pxmx]
 enabled = true
 port = https,http,8006,8007
-filter = proxmox
+filter = pxmx
 logpath = /var/log/daemon.log
 maxretry = 3
 # 1 anho
@@ -75,17 +74,15 @@ enabled = true
 
 " > /etc/fail2ban/jail.d/nubodata.conf
 
-sed -i '/user:root.*:::/c\user:root@pam:1:0:::sistemas@mail.nubodata.com:::' /etc/pve/user.cfg #Asigna el email sistemas a root.
+sed -i '/user:root.*:::/c\user:root@pam:1:0:::sist@mail.nubodata.com:::' user.cfg #Asigna el email sistemas a root.
 
-sed -i '/email_from:/c\email_from: proxmox@mail.nubodata.com' /etc/pve/datacenter.cfg #Susituye el email de envio por defecto. 
-grep -qxF 'email_from: proxmox@mail.nubodata.com' /etc/pve/datacenter.cfg || echo 'email_from: proxmox@mail.nubodata.com' >> /etc/pve/datacenter.cfg #Añade linea si no existe.
-echo "Reportando $NOMBRE correo como funcional" | pvemailforward
-
-FILE=/etc/proxmox-backup/node.cfg # Comprobamos si este servidor ejecuta PBS
+sed -i '/email_from:/c\email_from: pxmx@mail.nubodata.com' /etc/pve/datacenter.cfg #Susituye el email de envio por defecto. 
+grep -qxF 'email_from: pxmx@mail.nubodata.com' /etc/pve/datacenter.cfg || echo 'email_from: pxmx@mail.nubodata.com' >> /etc/pve/datacenter.cfg #Añade linea si no existe.
+ 
+FILE=/etc/pxmx-backup/node.cfg # Comprobamos si este servidor ejecuta PBS
 if test -f "$FILE"; then
     echo "Ejecuta PBS se procede a configurar"
-    grep -qxF 'email-from: proxmox@mail.nubodata.com' $FILE || echo 'email-from: proxmox@mail.nubodata.com' >> $FILE #Añade linea si no existe. Opiniones fuertes sobre que PBS utilize mail-from y PVE mail_from
+    grep -qxF 'email-from: pxmx@mail.nubodata.com' $FILE || echo 'email-from: pxmx@mail.nubodata.com' >> $FILE #Añade linea si no existe.
 else
     echo "Ignorar PBS"
 fi
-
