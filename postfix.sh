@@ -1,4 +1,5 @@
 #!/bin/bash
+
 NOMBRE=$1 # Nombre que debe tener el equipo.
 apt install -y libsasl2-modules postfix-pcre
 echo "
@@ -9,6 +10,7 @@ echo "
 " > /etc/postfix/smtp_header_checks
 
 echo "
+sender_canonical_maps = static:pxmx@mail.nubodata.com
 relayhost = [mail.nubodata.com]:465
 smtp_use_tls = yes
 smtp_sasl_auth_enable = yes
