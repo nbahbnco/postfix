@@ -76,7 +76,7 @@ enabled = true
 
 " > /etc/fail2ban/jail.d/nubodata.conf
 
-sed -i '/user:root.*:::/c\user:root@pam:1:0:::sist@mail.nubodata.com:::' user.cfg #Asigna el email sistemas a root.
+sed -i '/user:root.*:::/c\user:root@pam:1:0:::sist@mail.nubodata.com:::' /etc/pve/user.cfg #Asigna el email sistemas a root.
 
 sed -i '/email_from:/c\email_from: pxmx@mail.nubodata.com' /etc/pve/datacenter.cfg #Susituye el email de envio por defecto. 
 grep -qxF 'email_from: pxmx@mail.nubodata.com' /etc/pve/datacenter.cfg || echo 'email_from: pxmx@mail.nubodata.com' >> /etc/pve/datacenter.cfg #Añade linea si no existe.
