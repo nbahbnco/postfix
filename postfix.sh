@@ -34,7 +34,7 @@ smtp_tls_wrappermode = yes
 smtp_tls_security_level = encrypt
 " > /etc/postfix/main.cf
 
-echo "mail.nubodata.com bckp@mail.nubodata.com:z9ws9u47oucxuzrujqg33s7jdubtkpxw" > /etc/postfix/sasl_passwd
+echo "mail.nubodata.com bckp@mail.nubodata.com:$2" > /etc/postfix/sasl_passwd
 chmod 600 /etc/postfix/sasl_passwd
 chmod 600 /etc/postfix/smtp_header_checks
 
@@ -54,7 +54,7 @@ echo "
 ignoreip = 127.0.0.0
 bantime  = 31556952s
 findtime  = 120s
-destemail = sgrd@mail.nubodata.com
+destemail = segd@mail.nubodata.com
 sender = pxmx@mail.nubodata.com
 sendername = Fail2ban-$NOMBRE
 mta = sendmail
