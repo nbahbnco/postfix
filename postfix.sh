@@ -36,7 +36,7 @@ smtp_tls_wrappermode = yes
 smtp_tls_security_level = encrypt
 " > /etc/postfix/main.cf
 
-echo "mail.nubodata.com bckp@mail.nubodata.com:$2" > /etc/postfix/sasl_passwd
+echo "mail.nubodata.com pxmx@mail.nubodata.com:$2" > /etc/postfix/sasl_passwd
 chmod 600 /etc/postfix/sasl_passwd
 chmod 600 /etc/postfix/smtp_header_checks
 
