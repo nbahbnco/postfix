@@ -3,15 +3,15 @@
 NOMBRE=$1 # Nombre que debe tener el equipo.
 apt install -y libsasl2-modules postfix-pcre
 echo "
-/^From:.root/ REPLACE From: Notificacion Sistema $NOMBRE <pxmx@mail.nubodata.com>
-/^From:.vzdump/ REPLACE From: BACKUP $NOMBRE <pxmx@mail.nubodata.com>
+/^From:.root/ REPLACE From: Notificacion Sistema $NOMBRE <pxmx@nubodata.com>
+/^From:.vzdump/ REPLACE From: BACKUP $NOMBRE <pxmx@nubodata.com>
 /^Subject:.vzdump.*successful/ REPLACE Subject: BACKUP $NOMBRE EXITOSO
 /^Subject:.vzdump.*failed/ REPLACE Subject: BACKUP $NOMBRE FALLIDO
 " > /etc/postfix/smtp_header_checks
 
 echo "
-sender_canonical_maps = static:pxmx@mail.nubodata.com
-relayhost = [mail.nubodata.com]:465
+sender_canonical_maps = static:pxmx@nubodata.com
+relayhost = [webmail.nubodata.com]:465
 smtp_use_tls = yes
 smtp_sasl_auth_enable = yes
 smtp_sasl_security_options = noanonymous
@@ -36,7 +36,7 @@ smtp_tls_wrappermode = yes
 smtp_tls_security_level = encrypt
 " > /etc/postfix/main.cf
 
-echo "mail.nubodata.com pxmx@mail.nubodata.com:$2" > /etc/postfix/sasl_passwd
+echo "nubodata.com pxmx@nubodata.com:$2" > /etc/postfix/sasl_passwd
 chmod 600 /etc/postfix/sasl_passwd
 chmod 600 /etc/postfix/smtp_header_checks
 
@@ -56,8 +56,8 @@ echo "
 ignoreip = 127.0.0.0
 bantime  = 31556952s
 findtime  = 120s
-destemail = segd@mail.nubodata.com
-sender = pxmx@mail.nubodata.com
+destemail = segd@nubodata.com
+sender = pxmx@nubodata.com
 sendername = Fail2ban-$NOMBRE
 mta = sendmail
 action = %(action_mwl)s
@@ -76,15 +76,15 @@ enabled = true
 
 " > /etc/fail2ban/jail.d/nubodata.conf
 
-sed -i '/user:root.*:::/c\user:root@pam:1:0:::sist@mail.nubodata.com:::' /etc/pve/user.cfg #Asigna el email sistemas a root.
+sed -i '/user:root.*:::/c\user:root@pam:1:0:::syst@nubodata.com:::' /etc/pve/user.cfg #Asigna el email sistemas a root.
 
-sed -i '/email_from:/c\email_from: pxmx@mail.nubodata.com' /etc/pve/datacenter.cfg #Susituye el email de envio por defecto. 
-grep -qxF 'email_from: pxmx@mail.nubodata.com' /etc/pve/datacenter.cfg || echo 'email_from: pxmx@mail.nubodata.com' >> /etc/pve/datacenter.cfg #Añade linea si no existe.
+sed -i '/email_from:/c\email_from: pxmx@nubodata.com' /etc/pve/datacenter.cfg #Susituye el email de envio por defecto. 
+grep -qxF 'email_from: pxmx@nubodata.com' /etc/pve/datacenter.cfg || echo 'email_from: pxmx@nubodata.com' >> /etc/pve/datacenter.cfg #Añade linea si no existe.
  
 FILE=/etc/pxmx-backup/node.cfg # Comprobamos si este servidor ejecuta PBS
 if test -f "$FILE"; then
     echo "Ejecuta PBS se procede a configurar"
-    grep -qxF 'email-from: pxmx@mail.nubodata.com' $FILE || echo 'email-from: pxmx@mail.nubodata.com' >> $FILE #Añade linea si no existe.
+    grep -qxF 'email-from: pxmx@nubodata.com' $FILE || echo 'email-from: pxmx@nubodata.com' >> $FILE #Añade linea si no existe.
 else
     echo "Ignorar PBS"
 fi
